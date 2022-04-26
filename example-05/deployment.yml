@@ -14,7 +14,7 @@ spec:
         app: example-rails
     spec:
       containers:
-      - image: <dockerhub-username>/example-rails-app:0.1
+      - image: {dockerhub-username}/example-rails-app:0.1
         name: example-rails
         ports:
         - containerPort: 3000
