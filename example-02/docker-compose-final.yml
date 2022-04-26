@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  web:
+    image: example-01:latest
+    restart: always
+  wordpress_db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpresspass
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+  wordpress:
+    depends_on:
+      - wordpress_db
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: wordpress_db
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+  reverse-proxy:
+    image: jc21/nginx-proxy-manager:latest
+    restart: always
+    ports:
+      - 80:80
+      - 81:81
+    volumes:
+      - rp_data:/data
+      - le_data:/etc/letsencrypt
+volumes:
+  db_data: {}
+  wordpress_data: {}
+  le_data: {}
+  rp_data: {}

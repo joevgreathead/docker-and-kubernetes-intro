@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordle-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wordle
+  template:
+    metadata:
+      name: wordle
+      labels:
+        app: wordle
+    spec:
+      containers:
+      - image: joevgreathead/wordle:latest
+        name: wordle
+        ports:
+        - containerPort: 9673
+          protocol: TCP
+        readinessProbe:
+          periodSeconds: 1
+          httpGet:
+            path: /
+            port: 9673

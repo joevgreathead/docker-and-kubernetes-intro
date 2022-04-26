@@ -1,0 +1,15 @@
+# Provide the base image
+FROM nginx:1.21.6
+
+# Copy local files into the image
+COPY static-assets /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Run any necessary commands to prepare files, generate assets, etc.
+RUN chown -R nginx /usr/share/nginx/html
+
+# Label ports for exposure
+EXPOSE 9001
+
+# Define the command which starts the container
+CMD ["nginx", "-g", "daemon off;"]

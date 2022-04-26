@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-rails
+  template:
+    metadata:
+      name: example-rails
+      labels:
+        app: example-rails
+    spec:
+      containers:
+      - image: <dockerhub-username>/example-rails-app:0.1
+        name: example-rails
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          periodSeconds: 1
+          httpGet:
+            path: /
+            port: 3000
